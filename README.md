@@ -1,115 +1,103 @@
 # Supply Chain Management System (SCMS) - CLI Backend
 
-This project is a robust, command-line-based backend system for managing a supply chain. It handles the core logic for inventory, orders, shipments, and warehouses, demonstrating key object-oriented programming (OOP) principles and comprehensive testing with TestNG.
+A robust, command-line-based backend system for managing a supply chain, built with Java. This project serves as a comprehensive demonstration of core Java skills, Object-Oriented Programming (OOP) principles, custom exception handling, and a thorough testing strategy using TestNG.
 
 ---
-## ## Features
-* [cite_start]**Inventory Management**: Add, remove, transfer, and check stock levels for products across multiple warehouses[cite: 3].
-* [cite_start]**Order Processing**: Create sales orders and fulfill them, which automatically updates inventory levels and creates shipment records[cite: 3].
-* [cite_start]**Data Modeling**: A clear and encapsulated data model for Products, Suppliers, Warehouses, Orders, and more [cite: 49-57].
-* [cite_start]**Custom Exception Handling**: Implements custom exceptions for business rule violations like insufficient stock or invalid quantities, ensuring data integrity [cite: 82-87].
-* [cite_start]**Reporting**: Generates simple reports, such as identifying products with low stock levels[cite: 81].
-* [cite_start]**Comprehensive Test Suite**: Uses TestNG to validate business logic, test exception paths, and ensure system reliability[cite: 95].
+## Overview
+
+The SCMS is designed to simulate the core logic of a real-world supply chain. It provides functionalities to manage the flow of goods from suppliers to customers, handling inventory across multiple warehouses, processing sales and purchase orders, and generating critical business reports. The primary interface is a Command-Line Interface (CLI) that interacts with a service-oriented backend.
 
 ---
-## ## Project Structure
-The project follows a standard Maven structure, organized by feature into distinct packages:
-* [cite_start]`model`: Contains all the data entity classes (POJOs) like `Product`, `SalesOrder`, etc. [cite: 11-18].
-* [cite_start]`repository`: A data access layer that simulates a database using in-memory HashMaps [cite: 30-33].
-* [cite_start]`service`: Contains all the core business logic for inventory, orders, and reporting [cite: 24-29].
-* [cite_start]`exception`: Contains custom checked exceptions to handle specific business errors [cite: 19-23].
-* `App.java`: The main entry point for the command-line interface (CLI).
+## Core Features
+
+* **📦 Inventory Management**
+    * Track stock levels of products in different warehouses.
+    * Atomically add, remove, and transfer stock between warehouses.
+    * Prevents stock levels from dropping below zero through robust business rules.
+
+* **📄 Order Processing**
+    * Create sales orders for customers, checking for stock availability before confirming.
+    * Fulfill sales orders, which automatically deducts stock and creates a shipment record.
+    * A foundational structure for creating purchase orders to replenish stock from suppliers.
+
+* **📊 Reporting**
+    * Generate a "Low Stock Report" to identify products that need to be reordered based on a specified threshold.
+    * A framework for generating sales and full inventory reports.
+
+* **🛡️ Robust Error Handling**
+    * Implements custom checked exceptions for specific business rule violations, such as `InsufficientStockException`, `InvalidQuantityException`, and `EntityNotFoundException`. This ensures data integrity and predictable error states.
 
 ---
-## ## Technologies Used
+## Architecture and Design Principles
+
+The system is built using a classic layered architecture to separate concerns, making it clean, scalable, and maintainable.
+
+* **`App.java` (Presentation Layer)**: A simple CLI that acts as the user interface. It takes user input and calls the appropriate service methods.
+* **Service Layer (`/service`)**: Contains all the core business logic. This layer is responsible for orchestrating operations between the data models and the repository layer.
+* **Repository Layer (`/repository`)**: A data access layer that simulates a database. It uses in-memory `HashMap` collections to store and retrieve data, abstracting the data source from the business logic.
+
+### OOP Concepts Demonstrated
+* **Encapsulation**: Data (attributes) and the methods that operate on them are bundled together within classes (e.g., `Product`, `SalesOrder`), with access controlled through getters and setters.
+* **Composition**: Objects are composed of other objects. For example, a `SalesOrder` *contains* a `Product` (referenced by its ID), demonstrating a "has-a" relationship.
+* **Inheritance**: Custom exception classes inherit from Java's base `Exception` class to create a specialized error-handling hierarchy.
+
+---
+## Testing Strategy
+
+A key focus of this project is a comprehensive test suite built with **TestNG** to ensure the reliability and correctness of the business logic.
+
+* **State-Based Testing**: Tests are designed to verify the state of the system after an operation. For example, after fulfilling an order, a test asserts that the inventory level was correctly reduced.
+* **Exception Testing**: `expectedExceptions` is used to confirm that the application correctly throws custom exceptions (`InsufficientStockException`, `InvalidQuantityException`) when business rules are violated.
+* **Test Organization**: `@BeforeMethod` is used to set up a clean state for each test, ensuring test isolation. Tests are organized logically within their respective classes (`InventoryServiceTest`, `OrderServiceTest`).
+* **Advanced Features**: The suite uses `dependsOnMethods` to create logical test chains (e.g., an order must be created before it can be fulfilled).
+
+---
+## Technologies Used
 * **Java 11**
-* **Maven** (for build and dependency management)
-* **TestNG** (for unit and integration testing)
+* **Maven** (Build Tool and Dependency Management)
+* **TestNG** (Testing Framework)
 
 ---
-## ## Getting Started
+## Getting Started
 
-Follow these instructions to get a copy of the project up and running on your local machine.
-
-### ### Prerequisites
-Make sure you have the following software installed:
+### Prerequisites
 * Java Development Kit (JDK) 11 or higher
 * Apache Maven
 
-### ### How to Run
-1.  **Clone the repository** (if you're accessing it from GitHub):
+### Installation and Running
+1.  **Clone the repository**:
     ```bash
     git clone <your-repository-url>
-    cd supply-chain-management
+    cd <repository-folder>
     ```
-2.  **Build the project and run tests**:
-    This command will compile the code, download dependencies, and run the entire TestNG suite.
+2.  **Build the project**:
+    This command compiles the code, downloads dependencies, and runs the TestNG suite.
     ```bash
     mvn clean install
     ```
-3.  **Run the application**:
-    Once the build is successful, run the main application class from the terminal:
+3.  **Run the application from the command line**:
     ```bash
     java -cp target/supply-chain-management-1.0-SNAPSHOT.jar com.company.scm.App
     ```
-    You will see the interactive command-line menu.
+
+### Importing into an IDE (Eclipse/IntelliJ)
+1.  Open your IDE.
+2.  Select **File -> Import...**.
+3.  Choose **Maven -> Existing Maven Projects**.
+4.  Browse to the project's root directory and click **Finish**.
+5.  Once imported, find `App.java`, right-click on it, and select **Run As -> Java Application**.
 
 ---
-## ## How to Run the Tests
-This project places a strong emphasis on testing. To run the TestNG suite independently, use the following Maven command:
+## Running the Test Suite
+To run the complete TestNG suite independently, use the following Maven command:
 ```bash
 mvn test
 ```
 ---
-## ## Use Cases & Example Usage
+## Future Roadmap
 
-Here’s a quick walkthrough of how to interact with the running application.
-
-#### #### 1. Check Initial Stock
-The system starts with some pre-loaded data. Let's check the stock of a product.
-```
-===== Supply Chain Management System Menu =====
-1. Check Stock Level
-...
-Choose an option: 1
-Enter Product ID (e.g., PROD-001): PROD-001
-Enter Warehouse ID (e.g., W001): W001
-SUCCESS: Stock level for PROD-001 in W001 is: 50
-```
-
-#### #### 2. Create a Sales Order
-Let's create an order for a quantity that is in stock.
-```
-Choose an option: 2
-Enter Product ID: PROD-001
-Enter Quantity: 10
-Enter Customer Details: Nvrusha
-Enter Warehouse ID to sell from (e.g., W001): W001
-SUCCESS: Sales Order created! Order ID: SO-ABC12345
-```
-
-#### #### 3. Fulfill the Order and Verify Stock
-Fulfilling the order will reduce the stock.
-```
-Choose an option: 3
-Enter Sales Order ID to Fulfill: SO-ABC12345
-Enter Warehouse ID to fulfill from (e.g., W001): W001
-Enter Shipping Destination: Pune
-SUCCESS: Order SO-ABC12345 fulfilled. Shipment created with ID: SHP-XYZ98765
-
-Choose an option: 1
-Enter Product ID (e.g., PROD-001): PROD-001
-Enter Warehouse ID (e.g., W001): W001
-SUCCESS: Stock level for PROD-001 in W001 is: 40
-```
-
-#### #### 4. Demonstrate Exception Handling
-Let's try to order more than is available to see the custom exception in action.
-```
-Choose an option: 2
-Enter Product ID: PROD-001
-Enter Quantity: 99
-Enter Customer Details: Vishal
-Enter Warehouse ID to sell from (e.g., W001): W001
-Operation Failed: Not enough stock to create sales order.
-```
+This project provides a solid foundation. Future enhancements could include:
+* **Database Integration**: Replace the in-memory `HashMap` repositories with a persistent database like PostgreSQL or an in-memory DB like H2, using JPA/Hibernate.
+* **REST API**: Expose the service layer through a REST API using a framework like Spring Boot, allowing it to be consumed by a web or mobile front end.
+* **Enhanced Reporting**: Implement more complex reporting and analytics features.
+* **Authentication & Authorization**: Add user roles and permissions to control access to different parts of the system.
