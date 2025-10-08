@@ -94,10 +94,5 @@ To run the complete TestNG suite independently, use the following Maven command:
 mvn test
 ```
 ---
-## Future Roadmap
 
-This project provides a solid foundation. Future enhancements could include:
-* **Database Integration**: Replace the in-memory `HashMap` repositories with a persistent database like PostgreSQL or an in-memory DB like H2, using JPA/Hibernate.
-* **REST API**: Expose the service layer through a REST API using a framework like Spring Boot, allowing it to be consumed by a web or mobile front end.
-* **Enhanced Reporting**: Implement more complex reporting and analytics features.
-* **Authentication & Authorization**: Add user roles and permissions to control access to different parts of the system.
+
